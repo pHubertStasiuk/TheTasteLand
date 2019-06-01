@@ -12,6 +12,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @Entity(name = "users")
+@Builder
 public class UserEntity implements Serializable {
 
     @Getter(AccessLevel.NONE)
