@@ -1,5 +1,6 @@
 package com.tasteland.app.thetasteland.configuration.security;
 
+import com.tasteland.app.thetasteland.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,13 +21,22 @@ import java.util.Optional;
 @PropertySource("classpath:security-auth.properties")
 public class TastelandSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private Environment environment;
+    private final Environment environment;
+    private final AuthenticationService authenticationService;
 
+    @Autowired
+    public TastelandSecurityConfig(Environment environment, AuthenticationService authenticationService) {
+        this.environment = environment;
+        this.authenticationService = authenticationService;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(getIntProp("bcrypt.strength").get());
+        Optional<Integer> str = getIntProp("bcrypt.strength");
+        return str.isPresent() ?
+                new BCryptPasswordEncoder(str.get()) :
+                new BCryptPasswordEncoder();
+
     }
 
     private Optional<Integer> getIntProp(String property) {
