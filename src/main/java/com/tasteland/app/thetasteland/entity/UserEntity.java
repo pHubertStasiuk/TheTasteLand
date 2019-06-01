@@ -1,8 +1,7 @@
 package com.tasteland.app.thetasteland.entity;
 
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +14,9 @@ import java.io.Serializable;
 @Entity(name = "users")
 public class UserEntity implements Serializable {
 
-    private static final long serialVersionUID = -59857747523495955L;
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private static final long serialVersionUID = 7180100226821071686L;
     @Id
     @GeneratedValue
     private Long id;
