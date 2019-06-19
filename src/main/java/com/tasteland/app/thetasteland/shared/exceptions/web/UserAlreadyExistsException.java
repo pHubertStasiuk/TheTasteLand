@@ -1,4 +1,4 @@
-package com.tasteland.app.thetasteland.shared;
+package com.tasteland.app.thetasteland.shared.exceptions.web;
 
 public class UserAlreadyExistsException extends RuntimeException {
 
