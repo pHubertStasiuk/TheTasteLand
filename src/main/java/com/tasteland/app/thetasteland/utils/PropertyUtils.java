@@ -1,7 +1,7 @@
 package com.tasteland.app.thetasteland.utils;
 
-import com.tasteland.app.thetasteland.shared.exception.InvalidPropertyFormatException;
-import com.tasteland.app.thetasteland.shared.exception.InvalidPropertyName;
+import com.tasteland.app.thetasteland.shared.exceptions.utils.InvalidPropertyFormatException;
+import com.tasteland.app.thetasteland.shared.exceptions.utils.InvalidPropertyName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
