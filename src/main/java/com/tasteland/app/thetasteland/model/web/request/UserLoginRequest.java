@@ -1,4 +1,4 @@
-package com.tasteland.app.thetasteland.model.request;
+package com.tasteland.app.thetasteland.model.web.request;
 
 import lombok.Data;
 
