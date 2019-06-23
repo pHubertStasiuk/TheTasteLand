@@ -1,6 +1,7 @@
-package com.tasteland.app.thetasteland.model.auth;
+package com.tasteland.app.thetasteland.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -9,7 +10,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "role")
 @Data
-public class Role implements GrantedAuthority {
+@NoArgsConstructor
+public class RoleEntity implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +20,9 @@ public class Role implements GrantedAuthority {
     @Column(name = "name")
     private String name;
 
+    public RoleEntity(String name) {
+        this.name = name;
+    }
 
     @Override
     public String getAuthority() {
