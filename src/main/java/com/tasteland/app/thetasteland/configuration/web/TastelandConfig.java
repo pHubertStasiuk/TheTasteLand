@@ -1,13 +1,13 @@
 package com.tasteland.app.thetasteland.configuration.web;
 
+import com.jolbox.bonecp.BoneCPDataSource;
+import com.tasteland.app.thetasteland.utils.PropertyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -25,32 +25,32 @@ import java.util.Properties;
 @PropertySource("classpath:persistence-mysql.properties")
 public class TastelandConfig {
 
-    private final Environment environment;
+    private final PropertyUtils prop;
 
     @Autowired
-    public TastelandConfig(Environment environment) {
-        this.environment = environment;
+    public TastelandConfig(PropertyUtils prop) {
+        this.prop = prop;
     }
 
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(getProp("jdbc.driver"));
-        dataSource.setUrl(getProp("jdbc.url"));
-        dataSource.setUsername(getProp("jdbc.user"));
-        dataSource.setPassword(getProp("jdbc.password"));
+
+        BoneCPDataSource dataSource = new BoneCPDataSource();
+        dataSource.setDriverClass(prop.get("jdbc.driver"));
+        dataSource.setJdbcUrl(prop.decode("jdbc.url"));
+        dataSource.setUser(prop.decode("jdbc.user"));
+        dataSource.setPassword(prop.decode("jdbc.password"));
+        dataSource.setIdleMaxAgeInSeconds(prop.getInt("connection.pool.maxIdleTime"));
+        dataSource.setMaxConnectionsPerPartition(prop.getInt("connection.pool.maxPoolSize"));
+        dataSource.setMinConnectionsPerPartition(prop.getInt("connection.pool.minPoolSize"));
         return dataSource;
 
     }
-    private String getProp(String property) {
-        return environment.getProperty(property);
-    }
-
     private Properties setJpaProperties() {
         Properties props = new Properties();
-        props.setProperty("hibernate.dialect", getProp("hibernate.dialect"));
-        props.setProperty("hibernate.show_sql", getProp("hibernate.show_sql"));
-        props.setProperty("hibernate.format_sql", getProp("hibernate.format_sql"));
+        props.setProperty("hibernate.dialect", prop.get("hibernate.dialect"));
+        props.setProperty("hibernate.show_sql", prop.get("hibernate.show_sql"));
+        props.setProperty("hibernate.format_sql", prop.get("hibernate.format_sql"));
         return props;
     }
 
@@ -59,7 +59,7 @@ public class TastelandConfig {
         JpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource());
-        entityManagerFactoryBean.setPackagesToScan(getProp("hibernate.packagesToScan"));
+        entityManagerFactoryBean.setPackagesToScan(prop.get("hibernate.packagesToScan"));
         entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
         entityManagerFactoryBean.setJpaProperties(setJpaProperties());
         return entityManagerFactoryBean;
@@ -67,14 +67,14 @@ public class TastelandConfig {
 
     @Bean
     @Autowired
-    public PlatformTransactionManager transactionManager(EntityManagerFactory emf){
+    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
         jpaTransactionManager.setEntityManagerFactory(emf);
         return jpaTransactionManager;
     }
 
     @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 }
