@@ -1,26 +1,24 @@
-package com.tasteland.app.thetasteland.shared;
+package com.tasteland.app.thetasteland.shared.dto;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import com.tasteland.app.thetasteland.utils.StringRandomize;
+import lombok.*;
 
 import java.io.Serializable;
 
 @Data
+@NoArgsConstructor
 public class UserDTO implements Serializable {
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     private static final long serialVersionUID = 2238157241346298603L;
-
     private Long id;
-    private String userId;
+    private String userId = StringRandomize.generateUserId();
     private String firstName;
     private String lastName;
     private String email;
-    private String password;
     private String encryptedPassword;
-    private String emailVerificationToken;
     private Boolean emailVerified = false;
+    private String pictureURL;
+
 }
