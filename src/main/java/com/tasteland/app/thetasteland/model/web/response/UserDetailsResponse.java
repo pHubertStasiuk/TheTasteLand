@@ -1,4 +1,4 @@
-package com.tasteland.app.thetasteland.model.response;
+package com.tasteland.app.thetasteland.model.web.response;
 
 import lombok.Data;
 
@@ -9,4 +9,5 @@ public class UserDetailsResponse {
     private String firstName;
     private String lastName;
     private String email;
+    private String token;
 }
