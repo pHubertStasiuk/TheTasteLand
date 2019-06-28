@@ -64,4 +64,12 @@ public class UserController {
         BeanUtils.copyProperties(user, response);
         return new ResponseEntity<>(new HttpResponse(HttpMessage.USER_REGISTRATION_SUCCESSFUL, response), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?> delete(@PathVariable String userId) {
+        userService.deleteById(userId);
+        return new ResponseEntity<>(new HttpResponse(HttpMessage.USER_DELETED_SECCESSFUL), HttpStatus.OK);
+    }
+
+
 }

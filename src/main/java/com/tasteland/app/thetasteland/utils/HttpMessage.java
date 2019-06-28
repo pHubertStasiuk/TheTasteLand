@@ -16,7 +16,8 @@ public enum HttpMessage {
     USER_LOGOUT_FAILED("User is not authenticated!"),
     USER_LOGOUT_SUCCESSFUL("User has been logout!"),
     USER_LOGIN_FAILED("User is not logged in!"),
-    USER_LOGIN_SUCCESSFUL("User has been logged in!");
+    USER_LOGIN_SUCCESSFUL("User has been logged in!"),
+    USER_DELETED_SECCESSFUL("User has been deleted!");
 
 
 
